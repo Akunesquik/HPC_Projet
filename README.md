@@ -18,7 +18,12 @@ pip install -r requirements.txt
 ## Pour utiliser notre programme
 python plotGraphe.py
 
-pour changer le graphe utilisé, regarder ligne 25 et changer la valeur de choice par "congress" ou "facebook"
+pour changer le graphe utilisé, regarder ligne 25 et changer la valeur de Choice par "congress" ou "facebook"
+
+
+pour afficher les graphes, Mettre le verbose à 1, voir les appels des fonctions : simulate_epidemic_with_vaccination
+
+
 
 
 
