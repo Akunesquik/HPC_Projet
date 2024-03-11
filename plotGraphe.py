@@ -138,6 +138,8 @@ df = pd.DataFrame(results_list)
 # Écrire le DataFrame dans un fichier CSV
 df.to_csv('simulation_results.csv', index=False)
 
+print("Remplacement des résultats dans le csv")
+
 
 
 
