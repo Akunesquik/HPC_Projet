@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from IPython.display import clear_output
 
-def simulate_epidemic_with_vaccination(graph, initial_infected, vaccination_strategy=None, vaccination_rate=0, infection_vector=None):
+def simulate_epidemic_with_vaccination(graph, initial_infected, options, vaccination_strategy=None,verbose = 0, vaccination_rate=0, infection_vector=None):
     # Créer une copie du graphe original pour simuler la propagation de l'épidémie
     current_graph = copy.deepcopy(graph)
     infected = set(initial_infected)
@@ -12,11 +12,13 @@ def simulate_epidemic_with_vaccination(graph, initial_infected, vaccination_stra
     vaccinated = set()
     removed = set()
     dead = set()
+
     # Probabilité d'infection lors d'un contact avec un nœud infecté
-    infection_probability = 0.1
-    vaccination_probability = 0.05
-    recup_probability = 0.05
-    death_probability = 0.1
+    infection_probability = options["infection_probability"]
+    vaccination_probability = options["vaccination_probability"]
+    recup_probability = options["recup_probability"]
+    death_probability = options["death_probability"]
+
     # Ajouter un attribut 'state' à chaque nœud pour suivre son état (sain, infecté, retiré, vacciné)
     for node in current_graph.nodes():
         if node in infected:
@@ -57,13 +59,16 @@ def simulate_epidemic_with_vaccination(graph, initial_infected, vaccination_stra
             vaccinated_nodes = sorted_indices[:num_to_vaccinate]
             susceptible -= set(vaccinated_nodes)
             for node in vaccinated_nodes:
+                vaccinated.add(node)
                 current_graph.nodes[node]['state'] = 'vaccinated'
     
-    plt.ion()  # Activer le mode interactif de Matplotlib
-    fig = plt.figure()
+    
      # Créer une disposition initiale des nœuds
     initial_pos = nx.spring_layout(current_graph)
     # Simulation de la propagation de l'épidémie
+    if verbose :
+        plt.figure()
+        plt.ion()  # a commenter pour enlever le mode iteratif du plot
     i = 0
     while infected:
         for node in list(infected):
@@ -78,20 +83,27 @@ def simulate_epidemic_with_vaccination(graph, initial_infected, vaccination_stra
                 current_graph.nodes[node]['state'] = 'dead'
         vaccinate_nodes()
         
-        # Affichage du graphe à chaque étape de la simulation
-        state_colors = {'susceptible': 'skyblue', 'infected': 'red', 'removed': 'limegreen', 'vaccinated': 'green', 'dead': 'grey'}
-        plt.clf()
-        node_colors = [state_colors[current_graph.nodes[node]['state']] for node in current_graph.nodes()]
-        nx.draw_networkx_nodes(current_graph, pos=initial_pos, node_color=node_colors, node_size=100)
-        nx.draw_networkx_edges(current_graph, pos=initial_pos)
-        plt.title("Étape de la simulation")
-        plt.axis('off')
-        plt.show()
-        if i > 10:
-            plt.pause(0.5)
-        else: 
-            plt.pause(2)
-        i += 1
+        if verbose :
+            # Affichage du graphe à chaque étape de la simulation
+            state_colors = {'susceptible': 'skyblue', 'infected': 'red', 'removed': 'limegreen', 'vaccinated': 'green', 'dead': 'grey'}
+            plt.clf()
+            node_colors = [state_colors[current_graph.nodes[node]['state']] for node in current_graph.nodes()]
+            nx.draw_networkx_nodes(current_graph, pos=initial_pos, node_color=node_colors, node_size=100)
+            nx.draw_networkx_edges(current_graph, pos=initial_pos)
+
+            # Création de la légende manuellement
+            handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color, markersize=10, label=f'{state}') for state, color in state_colors.items()]
+            plt.legend(handles=handles, title="State Legend", loc='best')
+
+            msgTitle = f"Étape {i} de la simulation"
+            plt.title(msgTitle)
+            plt.axis('off')
+            plt.show()
+            if i > 7:
+                plt.pause(0.5)
+            else: 
+                plt.pause(2)
+            i += 1
         
         
     
