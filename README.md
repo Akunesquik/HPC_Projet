@@ -18,6 +18,7 @@ pip install -r requirements.txt
 ## Pour utiliser notre programme
 python plotGraphe.py
 
+
 pour changer le graphe utilisé, regarder ligne 25 et changer la valeur de Choice par "congress" ou "facebook"
 
 

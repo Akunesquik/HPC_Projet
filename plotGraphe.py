@@ -97,26 +97,27 @@ results_list = []
 
 # Options à tester
 options_list = [
-    {"infection_probability": 0.01, "vaccination_probability": 0.005, "recup_probability": 0.005, "death_probability": 0.01},
-    {"infection_probability": 0.02, "vaccination_probability": 0.01, "recup_probability": 0.01, "death_probability": 0.02},
-    {"infection_probability": 0.03, "vaccination_probability": 0.015, "recup_probability": 0.015, "death_probability": 0.03},
-    {"infection_probability": 0.04, "vaccination_probability": 0.02, "recup_probability": 0.02, "death_probability": 0.04},
-    {"infection_probability": 0.05, "vaccination_probability": 0.025, "recup_probability": 0.025, "death_probability": 0.05},
-    {"infection_probability": 0.06, "vaccination_probability": 0.03, "recup_probability": 0.03, "death_probability": 0.06},
-    {"infection_probability": 0.07, "vaccination_probability": 0.035, "recup_probability": 0.035, "death_probability": 0.07},
-    {"infection_probability": 0.08, "vaccination_probability": 0.04, "recup_probability": 0.04, "death_probability": 0.08},
-    {"infection_probability": 0.09, "vaccination_probability": 0.045, "recup_probability": 0.045, "death_probability": 0.09},
-    {"infection_probability": 0.1, "vaccination_probability": 0.05, "recup_probability": 0.05, "death_probability": 0.1}
+    {"num_to_vaccinate": 10,"infection_probability": 0.01, "vaccination_probability": 0.005, "recup_probability": 0.005, "death_probability": 0.01},
+    {"num_to_vaccinate": 10,"infection_probability": 0.02, "vaccination_probability": 0.01, "recup_probability": 0.01, "death_probability": 0.02},
+    {"num_to_vaccinate": 10,"infection_probability": 0.03, "vaccination_probability": 0.015, "recup_probability": 0.015, "death_probability": 0.03},
+    {"num_to_vaccinate": 10,"infection_probability": 0.04, "vaccination_probability": 0.02, "recup_probability": 0.02, "death_probability": 0.04},
+    {"num_to_vaccinate": 10,"infection_probability": 0.05, "vaccination_probability": 0.025, "recup_probability": 0.025, "death_probability": 0.05},
+    {"num_to_vaccinate": 10,"infection_probability": 0.06, "vaccination_probability": 0.03, "recup_probability": 0.03, "death_probability": 0.06},
+    {"num_to_vaccinate": 10,"infection_probability": 0.07, "vaccination_probability": 0.035, "recup_probability": 0.035, "death_probability": 0.07},
+    {"num_to_vaccinate": 10,"infection_probability": 0.08, "vaccination_probability": 0.04, "recup_probability": 0.04, "death_probability": 0.08},
+    {"num_to_vaccinate": 10,"infection_probability": 0.09, "vaccination_probability": 0.045, "recup_probability": 0.045, "death_probability": 0.09},
+    {"num_to_vaccinate": 10,"infection_probability": 0.1, "vaccination_probability": 0.05, "recup_probability": 0.05, "death_probability": 0.1}
 ]
 
 # Boucle sur les différentes options
 for options in options_list:
     # Exécutez la simulation avec les options actuelles
-    vaccinated_with_random_vaccination, removed_with_random_vaccination, dead_with_random_vaccination = simulate_epidemic_with_vaccination(G, initial_infected, options, verbose=0, vaccination_strategy='random', vaccination_rate=0.2)
+    vaccinated_with_random_vaccination, removed_with_random_vaccination, dead_with_random_vaccination = simulate_epidemic_with_vaccination(G, initial_infected, options, verbose=1, vaccination_strategy='random', vaccination_rate=0.2)
     vaccinated_with_infection_vector_vaccination, removed_with_infection_vector_vaccination, dead_with_infection_vector_vaccination = simulate_epidemic_with_vaccination(G, initial_infected, options, verbose=0, vaccination_strategy='infection_vector', vaccination_rate=0.2, infection_vector=stationary_distribution)
 
     # Stocker les résultats dans un dictionnaire
     result = {
+        "num_to_vaccinate" : options["num_to_vaccinate"],
         "infection_probability": options["infection_probability"],
         "vaccination_probability": options["vaccination_probability"],
         "recup_probability": options["recup_probability"],

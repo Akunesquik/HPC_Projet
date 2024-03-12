@@ -12,8 +12,10 @@ def simulate_epidemic_with_vaccination(graph, initial_infected, options, vaccina
     vaccinated = set()
     removed = set()
     dead = set()
+    
 
     # Probabilité d'infection lors d'un contact avec un nœud infecté
+    num_to_vaccinate = options["num_to_vaccinate"]
     infection_probability = options["infection_probability"]
     vaccination_probability = options["vaccination_probability"]
     recup_probability = options["recup_probability"]
@@ -55,7 +57,6 @@ def simulate_epidemic_with_vaccination(graph, initial_infected, options, vaccina
         elif vaccination_strategy == 'infection_vector':
             # Vacciner les nœuds les plus importants selon le vecteur d'infection
             sorted_indices = np.argsort(infection_vector)[::-1]  # Trier les indices du vecteur d'infection dans l'ordre décroissant
-            num_to_vaccinate = int(len(graph.nodes()) * vaccination_rate)
             vaccinated_nodes = sorted_indices[:num_to_vaccinate]
             susceptible -= set(vaccinated_nodes)
             for node in vaccinated_nodes:
